@@ -7,6 +7,14 @@
     <div>
         <input class="visit-state" type="checkbox" v-model="visited" v-on:change="updateVisited">
     </div>
+
+    <div> 
+        <!--This basically figures out what the route should be with the name StateMap(map/:state) and whatever the state name is from the props -->
+        <router-link v-bind:to=" {name: 'StateMap', params: {state: state.name} }"><!--name is the name set in index.js, state.name is the state prop-->
+            <!-- /map/Iowa or /map/Georgia -->
+            <img class="map-icon" src="@/assets/map_icon.png">
+        </router-link>
+    </div>
 </div>
     
 </template>
@@ -46,5 +54,10 @@ export default {
 .visit-state {
     margin: 1rem;
     text-align: center;
+}
+
+.map-icon {
+    width: 2rem;
+    height: 2rem;
 }
 </style>

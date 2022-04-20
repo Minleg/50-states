@@ -1,6 +1,6 @@
 // this will make request to the API
 import axios from 'axios'
-import { response } from 'express'
+//import { response } from 'express'
 
 export default { // exporting methods that rest of our code will use
     getAllStates() {
@@ -8,11 +8,17 @@ export default { // exporting methods that rest of our code will use
             return response.data
         })
     },
-    setVisited(stateName, visited) {
-        
+
+    setVisited(stateName, visited) {     
         let requestData = { visited: visited }
         // api/state/Wisconsin
-        return axios.patch('/api/states' + stateName, requestData ).then( response => {
+        return axios.patch('/api/states/' + stateName, requestData ).then( response => {
+            return response.data
+        })
+    },
+
+    getOneState(stateName) {
+        return axios.get('/api/state/' + stateName).then( response => {
             return response.data
         })
     }
