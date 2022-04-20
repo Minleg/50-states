@@ -24,9 +24,7 @@ import { LMap, LTileLayer } from '@vue-leaflet/vue-leaflet'
 
 export default {
     name: 'StateMap',
-    components: {
-        LMap, LTileLayer
-    },
+    components: { LMap, LTileLayer },
     data() {
         return {
             state: {}
