@@ -1,8 +1,12 @@
 // starts our express server running
 let express = require('express')
 let states_api = require('./routes/states')
+let path = require('path')
 
 let app = express() // creates new web server app
+
+let vueAppPath = path.join(__dirname,'client','dist') // path where your vue app is 
+app.use(express.static(vueAppPath)) // requests to the application if no particular path is specified, files in dist will be served (by default it will be index.html file in dist directory that will be served)
 
 app.use(express.json())
 // Vue client will send messages to the server in JSON format, this line enables processing and ability for web server to understand 

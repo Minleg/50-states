@@ -7,12 +7,12 @@
 
     <!--to do map here-->
 
-    <div id="map-container">
-        <l-map v-bind:center="mapCenter" v-bind:zoom="stata.zoom">
-            <l-title-layer
+    <div id="map-container" v-if="dataReady">
+        <l-map ref="map" v-on:ready="onMapReady" v-bind:center="mapCenter" v-bind:zoom="state.zoom">
+            <l-tile-layer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution="&copy; OpenStreetMap contributors">
-            </l-title-layer>
+            </l-tile-layer>
         </l-map>
     </div>
 </div>
@@ -27,7 +27,9 @@ export default {
     components: { LMap, LTileLayer },
     data() {
         return {
-            state: {}
+            state: {},
+            dataReady: false, // when the API call completes , we set dataReady to true
+            mapReady: false // when the map loads, we set mapReady to true
         }
     },
     mounted() {
@@ -38,7 +40,34 @@ export default {
         fetchStateData(){
             this.$stateService.getOneState(this.state.name).then( state => {
                 this.state = state // stata data overwritten with state info from the API
+                this.dataReady = true // API call completes
+            }).catch( err => {
+                // 404 not found
+                if ( err.response && err.response.status == 404 ){
+                    this.state.name = '?' // better way to communicate to user
+                } else {
+                    // 500 server error
+                    alert('Sorry, error fetching data for this state')
+                    console.error(err)  // for the developer
+                }
             })
+        },
+        
+        onMapReady(){
+            this.mapReady = true
+        },
+
+        setMapView() {
+            if (this.mapReady && this.dataReady) {
+                //todo - make sure map shows correct part of the world and zoom level
+                this.$refs.map.leafletObject.setView(this.mapCenter, this.zoom)
+
+            }
+        }
+    },
+    computed: {
+        mapCenter() {
+            return [this.state.lat, this.state.lon ]
         }
     }
 }
