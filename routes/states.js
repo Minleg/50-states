@@ -26,6 +26,15 @@ router.get('/state/:name', function(req, res, name) {
 
 })
 
+// API route to get all the visited states
+router.get('/visitedstates',function(req, res, next){
+    States.findAll({ where: { visited: true} }).then ( states => { // finds all the states where visited is true
+        console.log(states.name)
+        return res.json(states)
+    })
+    .catch( err => next(err))
+})
+
 // patch route to update a state - whether visited or not
 
 router.patch('/states/:name', function(req, res, next) {

@@ -21,6 +21,12 @@ export default { // exporting methods that rest of our code will use
         return axios.get('/api/state/' + stateName).then( response => {
             return response.data
         })
+    },
+
+    getVisitedStates() { // request to get all the visited states info
+        return axios.get('/api/visitedstates').then( response => {
+            return response.data
+        })
     }
 
 }
