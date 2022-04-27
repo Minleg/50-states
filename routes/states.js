@@ -28,7 +28,7 @@ router.get('/state/:name', function(req, res, name) {
 
 // API route to get all the visited states
 router.get('/visitedstates',function(req, res, next){
-    States.findAll({ where: { visited: true} }).then ( states => { // finds all the states where visited is true
+    States.findAll({where:{visited: true}}, {order: ['name']}).then ( states => { // finds all the states where visited is true
         console.log(states.name)
         return res.json(states)
     })
