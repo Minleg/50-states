@@ -23,7 +23,8 @@ export default {
         stateVisited() {
             this.$stateService.getVisitedStates().then( states => {
                 this.visitedStates = states
-                this.visitedStates.sort()
+                console.log(states)
+                //this.visitedStates.sort()
             })
             .catch(err => {
                 alert('Can\'t fetch visited states')
