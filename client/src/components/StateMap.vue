@@ -15,6 +15,10 @@
             </l-tile-layer>
         </l-map>
     </div>
+
+    <div>
+        <p>State fact : {{Fact}}</p>
+    </div>
 </div>
 </template>
 
@@ -28,13 +32,16 @@ export default {
     data() {
         return {
             state: {},
+            Fact: '', // to store the fact about the state from the stateFact API call
             dataReady: false, // when the API call completes , we set dataReady to true
             mapReady: false // when the map loads, we set mapReady to true
         }
     },
     mounted() {
         this.state.name = this.$route.params.state // this is the route for the state in index.js
+        this.stateFact() 
         this.fetchStateData()
+        
     },
     methods: {
         fetchStateData(){
@@ -66,7 +73,18 @@ export default {
                 this.$refs.map.leafletObject.setView(this.mapCenter, this.zoom)
 
             }
+        },
+
+        stateFact() {
+            let state = this.state.name
+            fetch(`https://gentle-wave-86458.herokuapp.com/api/fact/${state}`)
+                .then(response => response.json())
+                .then(data => {
+                    //console.log(data)
+                    this.Fact = data.fact // updates the Fact data with fact from API call
+                    })
         }
+       
     },
     computed: {
         mapCenter() {
